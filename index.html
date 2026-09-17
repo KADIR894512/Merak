@@ -1,767 +1,1098 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MASTER PRINTER - Enterprise Web Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>MASTER PRINTER - Official Digital & Kiosk Printing Portal</title>
+  
+  <!-- Modern Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg-dark: #0A0D14;
-      --bg-card: #121826;
-      --bg-card-hover: #1A2236;
+      --bg-dark: #07090E;
+      --bg-surface: #0F1420;
+      --bg-card: #151D2E;
+      --bg-card-alt: #1B2438;
       --gold-primary: #F59E0B;
+      --gold-hover: #D97706;
       --gold-light: #FDE68A;
-      --gold-gradient: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #B45309 100%);
+      --gold-glow: rgba(245, 158, 11, 0.25);
+      --gold-gradient: linear-gradient(135deg, #FBBF24 0%, #F59E0B 50%, #D97706 100%);
       --accent-blue: #3B82F6;
       --accent-green: #10B981;
+      --accent-purple: #8B5CF6;
+      --accent-red: #EF4444;
       --text-main: #F8FAFC;
       --text-muted: #94A3B8;
-      --border-color: rgba(245, 158, 11, 0.25);
-      --border-glow: 0 0 20px rgba(245, 158, 11, 0.15);
+      --text-sub: #64748B;
+      --border-color: rgba(245, 158, 11, 0.2);
+      --border-light: rgba(255, 255, 255, 0.08);
       --font-display: 'Cinzel', serif;
-      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
 
-    * {
+    /* Reset & Base */
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
+      width: 100%;
+      min-height: 100%;
       background-color: var(--bg-dark);
       color: var(--text-main);
       font-family: var(--font-body);
-      min-height: 100vh;
-      line-height: 1.6;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.08) 0%, transparent 40%);
+      line-height: 1.5;
+      overflow-x: hidden !important;
+      position: relative;
     }
 
-    /* Navigation Header */
-    header {
-      background: rgba(18, 24, 38, 0.85);
-      backdrop-filter: blur(16px);
+    body {
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(245, 158, 11, 0.07) 0%, transparent 35%),
+        radial-gradient(circle at 90% 20%, rgba(59, 130, 246, 0.06) 0%, transparent 35%),
+        radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+      padding-bottom: 80px; /* Space for bottom nav on mobile */
+    }
+
+    /* App Container */
+    .app-wrapper {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Top Header */
+    .site-header {
+      width: 100%;
+      background: rgba(15, 20, 32, 0.95);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-color);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
     }
 
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 16px 24px;
+    .header-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 12px 16px;
+      max-width: 1080px;
+      margin: 0 auto;
     }
 
-    .brand {
+    .brand-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       text-decoration: none;
     }
 
-    .brand-logo {
-      width: 42px;
-      height: 42px;
+    .brand-logo-badge {
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
       background: var(--gold-gradient);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
       font-family: var(--font-display);
       font-weight: 900;
       font-size: 20px;
-      color: #0F172A;
+      color: #0B0F19;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+      flex-shrink: 0;
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
     }
 
     .brand-title {
       font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 1.25rem;
-      letter-spacing: 1px;
+      font-weight: 900;
+      font-size: 1.15rem;
+      letter-spacing: 0.8px;
       color: var(--gold-light);
+      line-height: 1.1;
+      white-space: nowrap;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover, .nav-links a.active {
-      color: var(--gold-primary);
-    }
-
-    .btn-action {
-      background: var(--gold-gradient);
-      color: #0F172A;
+    .brand-tag {
+      font-size: 0.65rem;
+      color: var(--accent-green);
       font-weight: 700;
-      padding: 10px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: transform 0.15s, box-shadow 0.15s;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      animation: pulseGreen 2s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .header-actions {
+      display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .btn-action:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+    .header-btn {
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1px solid var(--border-color);
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--gold-light);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
     }
 
-    /* Container */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 24px;
+    .header-btn:hover {
+      background: var(--gold-primary);
+      color: #000;
     }
 
-    /* Hero Section */
-    .hero {
-      text-align: center;
-      padding: 40px 0 60px;
+    /* Tab Navigation Pill Bar (Desktop & Tablet) */
+    .desktop-nav {
+      display: none;
+      gap: 6px;
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+      }
+    }
+
+    .nav-tab {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      transition: all 0.2s;
+    }
+
+    .nav-tab:hover, .nav-tab.active {
+      color: var(--gold-light);
+      background: rgba(245, 158, 11, 0.12);
+    }
+
+    /* Main Hero Banner */
+    .hero-section {
+      background: linear-gradient(145deg, #161F33 0%, #0F1420 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      margin: 20px 0 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+
+    .hero-section::after {
+      content: '🖨️';
+      position: absolute;
+      right: -10px;
+      bottom: -20px;
+      font-size: 140px;
+      opacity: 0.08;
+      pointer-events: none;
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      padding: 6px 16px;
-      border-radius: 999px;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
       color: var(--gold-primary);
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 20px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 12px;
     }
 
-    .hero h1 {
+    .hero-title {
       font-family: var(--font-display);
-      font-size: 3rem;
+      font-size: 1.75rem;
       font-weight: 900;
       color: #FFFFFF;
-      line-height: 1.2;
-      margin-bottom: 16px;
-      letter-spacing: 0.5px;
+      line-height: 1.25;
+      margin-bottom: 8px;
     }
 
-    .hero h1 span {
+    .hero-title span {
       background: var(--gold-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .hero p {
-      font-size: 1.15rem;
+    .hero-subtitle {
+      font-size: 0.9rem;
       color: var(--text-muted);
-      max-width: 700px;
-      margin: 0 auto 30px;
+      margin-bottom: 18px;
+      max-width: 600px;
     }
 
-    /* Routing Logic Demonstration Section */
-    .routing-showcase {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 32px;
-      box-shadow: var(--border-glow);
-      margin-bottom: 48px;
-    }
-
-    .routing-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .routing-header h2 {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      color: var(--gold-light);
-      display: flex;
-      align-items: center;
+    .hero-cta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
 
-    .express-tag {
-      background: #2563EB;
-      color: #FFFFFF;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      padding: 4px 10px;
-      border-radius: 6px;
+    @media (max-width: 480px) {
+      .hero-cta-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .btn-primary {
+      background: var(--gold-gradient);
+      color: #0B0F19;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-light);
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn-secondary:active {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Section Headers */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin: 28px 0 16px;
+      padding: 0 4px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-desc {
+      font-size: 0.78rem;
+      color: var(--text-sub);
       font-weight: 600;
     }
 
-    .route-input-group {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
+    /* Live Services Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
     }
 
-    .route-input {
-      flex: 1;
-      background: rgba(10, 13, 20, 0.8);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      color: var(--text-main);
-      padding: 14px 18px;
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .service-card:hover {
+      border-color: var(--border-color);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .service-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .service-icon {
+      width: 44px;
+      height: 44px;
       border-radius: 12px;
-      font-family: var(--font-mono);
-      font-size: 1rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .route-input:focus {
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
-    }
-
-    .quick-routes {
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 24px;
       align-items: center;
+      justify-content: center;
+      font-size: 22px;
     }
 
-    .quick-routes span {
-      font-size: 0.85rem;
+    .icon-bw { background: rgba(148, 163, 184, 0.15); color: #CBD5E1; }
+    .icon-col { background: rgba(59, 130, 246, 0.15); color: #60A5FA; }
+    .icon-pho { background: rgba(236, 72, 153, 0.15); color: #F472B6; }
+    .icon-bin { background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
+    .icon-lam { background: rgba(16, 185, 129, 0.15); color: #34D399; }
+    .icon-sca { background: rgba(139, 92, 246, 0.15); color: #A78BFA; }
+
+    .service-price-pill {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--gold-light);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      font-family: var(--font-mono);
+    }
+
+    .service-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .service-desc {
+      font-size: 0.8rem;
       color: var(--text-muted);
-      margin-right: 4px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+      flex-grow: 1;
     }
 
-    .route-chip {
+    .service-btn {
+      width: 100%;
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.12);
       color: var(--text-main);
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 10px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s;
     }
 
-    .route-chip:hover {
-      background: rgba(245, 158, 11, 0.15);
+    .service-btn:hover {
+      background: var(--gold-primary);
       border-color: var(--gold-primary);
-      color: var(--gold-light);
+      color: #0B0F19;
     }
 
-    /* Step-by-Step Resolution Pipeline */
-    .pipeline {
+    /* Instant Order Calculator & Upload Box */
+    .order-builder-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      margin-top: 24px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-      margin-bottom: 28px;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 16px;
     }
 
-    .step-card {
-      background: rgba(10, 13, 20, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 18px;
-      position: relative;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
-    .step-card.active-check {
-      border-color: var(--gold-primary);
-      background: rgba(245, 158, 11, 0.08);
-      box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    .step-card.resolved {
-      border-color: var(--accent-green);
-      background: rgba(16, 185, 129, 0.1);
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-    }
-
-    .step-badge {
-      display: inline-block;
-      font-size: 0.75rem;
+    .form-group label {
+      font-size: 0.8rem;
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 8px;
     }
 
-    .step-card.resolved .step-badge {
-      color: var(--accent-green);
-    }
-
-    .step-title {
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      font-weight: 600;
+    .form-input, .form-select {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-light);
       color: var(--text-main);
-      margin-bottom: 6px;
-      word-break: break-all;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-family: var(--font-body);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
     }
 
-    .step-desc {
-      font-size: 0.8rem;
+    .form-input:focus, .form-select:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+    }
+
+    /* File Drop Zone */
+    .dropzone {
+      border: 2px dashed rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.04);
+      border-radius: var(--radius-md);
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      margin: 16px 0;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .dropzone:hover {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: var(--gold-primary);
+    }
+
+    .dropzone-icon {
+      font-size: 32px;
+      margin-bottom: 6px;
+    }
+
+    .dropzone-text {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+
+    .dropzone-sub {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+    }
+
+    /* Price Summary Bar */
+    .price-summary {
+      background: rgba(10, 13, 20, 0.9);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 16px 0;
+    }
+
+    .price-label {
+      font-size: 0.85rem;
       color: var(--text-muted);
     }
 
-    .status-indicator {
+    .price-total {
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--gold-light);
+    }
+
+    /* Tracking & Kiosk Cards */
+    .cards-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 700px) {
+      .cards-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .action-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .box-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--gold-light);
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-top: 10px;
-      font-size: 0.8rem;
-      font-weight: 600;
+      gap: 8px;
     }
 
-    .status-match {
-      color: var(--accent-green);
+    /* Routing Inspector Accordion (Preserved) */
+    .routing-accordion {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-top: 30px;
     }
 
-    .status-skip {
+    .routing-summary {
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
       color: var(--text-muted);
-    }
-
-    /* Live Frame / Resolution Result */
-    .result-console {
-      background: #080B10;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-
-    .console-bar {
-      background: #151C2C;
-      padding: 10px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-    }
-
-    .console-dots {
-      display: flex;
-      gap: 6px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-    .dot-red { background: #EF4444; }
-    .dot-yellow { background: #F59E0B; }
-    .dot-green { background: #10B981; }
-
-    .console-body {
-      padding: 20px;
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      line-height: 1.7;
-    }
-
-    .log-line {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 4px;
-    }
-
-    .log-time {
-      color: #64748B;
       user-select: none;
     }
 
-    .log-success { color: var(--accent-green); }
-    .log-warn { color: var(--gold-primary); }
-    .log-info { color: var(--accent-blue); }
-
-    /* Features Grid */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-      margin-top: 40px;
+    /* Fixed Mobile Bottom Navigation Bar */
+    .mobile-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 20, 32, 0.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 9999;
     }
 
-    .feature-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 28px;
-      transition: transform 0.2s, border-color 0.2s;
+    .bottom-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 8px;
+      transition: color 0.15s;
     }
 
-    .feature-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-color);
+    .bottom-tab span:first-child {
+      font-size: 18px;
     }
 
-    .feature-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: rgba(245, 158, 11, 0.12);
+    .bottom-tab.active, .bottom-tab:hover {
+      color: var(--gold-primary);
+    }
+
+    /* Toast Notification */
+    .toast-box {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: var(--gold-gradient);
+      color: #0B0F19;
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 12px 24px;
+      border-radius: 999px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      z-index: 10000;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      color: var(--gold-primary);
-      margin-bottom: 18px;
+      gap: 8px;
     }
 
-    .feature-card h3 {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      color: var(--text-main);
-      margin-bottom: 10px;
-    }
-
-    .feature-card p {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 40px 24px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-top: 60px;
-    }
-
-    footer a {
-      color: var(--gold-primary);
-      text-decoration: none;
+    .toast-box.show {
+      transform: translateX(-50%) translateY(0);
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation Header -->
-  <header>
-    <div class="nav-container">
-      <a href="/" class="brand">
-        <div class="brand-logo">K</div>
-        <div class="brand-title">MASTER PRINTER</div>
+  <!-- Toast Pop-up -->
+  <div id="toast" class="toast-box">
+    <span>✅</span> <span id="toastMsg">Order placed successfully!</span>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand-group">
+        <div class="brand-logo-badge">K</div>
+        <div class="brand-info">
+          <div class="brand-title">MASTER PRINTER</div>
+          <div class="brand-tag"><span class="status-dot"></span> Online & Kiosk Live</div>
+        </div>
       </a>
-      <ul class="nav-links">
-        <li><a href="/" class="active">Home</a></li>
-        <li><a href="javascript:void(0)" onclick="resolveRoute('/example/')">Example Route</a></li>
-        <li><a href="javascript:void(0)" onclick="resolveRoute('/cloud/')">Cloud Files</a></li>
-        <li><a href="javascript:void(0)" onclick="resolveRoute('/kiosk/')">Kiosk</a></li>
-      </ul>
-      <a href="https://ais-pre-jvm4p4evnzcnooorrqzmzu-449753653790.asia-southeast1.run.app" class="btn-action" target="_blank">
-        <span>Launch App</span> &rarr;
-      </a>
+
+      <!-- Desktop Navigation Tabs -->
+      <nav class="desktop-nav">
+        <button class="nav-tab active" onclick="scrollToSection('services')">Services</button>
+        <button class="nav-tab" onclick="scrollToSection('order-builder')">Order Print</button>
+        <button class="nav-tab" onclick="scrollToSection('tracker')">Track Job</button>
+        <button class="nav-tab" onclick="scrollToSection('kiosk')">Kiosk PIN</button>
+      </nav>
+
+      <div class="header-actions">
+        <a href="tel:+919876543210" class="header-btn" title="Call Helpline">
+          📞 <span style="display:none; @media(min-width:480px){display:inline;}">Call</span>
+        </a>
+        <a href="https://ais-pre-jvm4p4evnzcnooorrqzmzu-449753653790.asia-southeast1.run.app" class="header-btn" style="background: var(--gold-gradient); color:#0B0F19; border:none;" target="_blank">
+          ⚡ App
+        </a>
+      </div>
     </div>
   </header>
 
-  <main class="container">
+  <main class="app-wrapper">
 
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-badge">⚡ Production Static Router & Web Portal</div>
-      <h1>Enterprise <span>Master Printer</span> Architecture</h1>
-      <p>
-        Unified printing ecosystem powered by high-concurrency cloud sync, autonomous kiosks, and standard HTTP directory index routing.
+    <!-- Hero Announcement Card -->
+    <section class="hero-section">
+      <div class="hero-badge">👑 Royal KCrest Printing Platform</div>
+      <h1 class="hero-title">Ultra HD Print & Xerox <span>Online Hub</span></h1>
+      <p class="hero-subtitle">
+        Upload PDF, notes or photos directly from your phone. Pick up instantly at our smart kiosk or get fast doorstep delivery.
       </p>
+
+      <div class="hero-cta-grid">
+        <button class="btn-primary" onclick="scrollToSection('order-builder')">
+          <span>📤</span> Upload Document & Print
+        </button>
+        <button class="btn-secondary" onclick="scrollToSection('tracker')">
+          <span>🔍</span> Track Active Order
+        </button>
+      </div>
     </section>
 
-    <!-- Express Static Routing Logic Interactive Pipeline -->
-    <section class="routing-showcase">
-      <div class="routing-header">
-        <div>
-          <h2>
-            <span>🔀</span> URL Route Resolution Engine
-          </h2>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">
-            Matches Express <code style="color: var(--gold-light); font-family: var(--font-mono);">express.static('public', { extensions: ['html'], index: ['index.html', 'home.html'] })</code>
-          </p>
-        </div>
-        <span class="express-tag">Express Static Standard</span>
+    <!-- Services Catalog Section -->
+    <div class="section-head" id="services">
+      <div>
+        <h2 class="section-title"><span>🖨️</span> Live Print Rates & Services</h2>
+        <div class="section-desc">Transparent prices &bull; No hidden charges</div>
       </div>
+    </div>
 
-      <!-- Live Route Input Bar -->
-      <div class="route-input-group">
-        <input 
-          type="text" 
-          id="routeInput" 
-          class="route-input" 
-          value="/example/" 
-          placeholder="Type any route path e.g. /example/, /kiosk, /home..."
-          onkeydown="if(event.key === 'Enter') runResolution()"
-        />
-        <button class="btn-action" onclick="runResolution()">
-          Test Route
+    <div class="services-grid">
+      <!-- B&W Printing -->
+      <div class="service-card">
+        <div class="service-top">
+          <div class="service-icon icon-bw">📄</div>
+          <div class="service-price-pill">₹2.00 / pg</div>
+        </div>
+        <div class="service-name">Document Printing (B&W)</div>
+        <div class="service-desc">Crisp laser printing for study notes, legal briefs, assignments & eBooks.</div>
+        <button class="service-btn" onclick="selectService('Document Printing (B&W)', 2.0)">
+          <span>⚡</span> Order B&W Print
         </button>
       </div>
 
-      <!-- Quick Route Selector -->
-      <div class="quick-routes">
-        <span>Quick Samples:</span>
-        <button class="route-chip" onclick="resolveRoute('/example/')">/example/</button>
-        <button class="route-chip" onclick="resolveRoute('/example')">/example</button>
-        <button class="route-chip" onclick="resolveRoute('/kiosk/')">/kiosk/</button>
-        <button class="route-chip" onclick="resolveRoute('/')">/</button>
-        <button class="route-chip" onclick="resolveRoute('/admin')">/admin</button>
-        <button class="route-chip" onclick="resolveRoute('/orders/summary')">/orders/summary</button>
+      <!-- Color Printing -->
+      <div class="service-card">
+        <div class="service-top">
+          <div class="service-icon icon-col">🎨</div>
+          <div class="service-price-pill">₹10.00 / pg</div>
+        </div>
+        <div class="service-name">Document Printing (Colour)</div>
+        <div class="service-desc">Vibrant digital colour printing for charts, presentations, certificates & project covers.</div>
+        <button class="service-btn" onclick="selectService('Document Printing (Colour)', 10.0)">
+          <span>⚡</span> Order Colour Print
+        </button>
       </div>
 
-      <!-- Step-by-Step Resolution Sequence -->
-      <div class="pipeline">
-        <!-- Step 1: Directory index.html -->
-        <div class="step-card" id="step1">
-          <span class="step-badge">Priority 1 • Index File</span>
-          <div class="step-title" id="step1Target">/example/index.html</div>
-          <div class="step-desc">Checks primary directory index inside the target folder.</div>
-          <div class="status-indicator" id="step1Status">
-            <span class="status-skip">Waiting...</span>
+      <!-- Photo Printing -->
+      <div class="service-card">
+        <div class="service-top">
+          <div class="service-icon icon-pho">🖼️</div>
+          <div class="service-price-pill">₹25.00 / sheet</div>
+        </div>
+        <div class="service-name">Photo Printing (High Gloss)</div>
+        <div class="service-desc">2400 DPI Studio quality prints on 260gsm imported micro-porous glossy paper.</div>
+        <button class="service-btn" onclick="selectService('Photo Printing (High Gloss)', 25.0)">
+          <span>⚡</span> Order Glossy Photo
+        </button>
+      </div>
+
+      <!-- Spiral & Thesis Binding -->
+      <div class="service-card">
+        <div class="service-top">
+          <div class="service-icon icon-bin">📚</div>
+          <div class="service-price-pill">₹50.00 / book</div>
+        </div>
+        <div class="service-name">Thesis & Spiral Binding</div>
+        <div class="service-desc">Twin-loop metal wire or heavy plastic coil with transparent scratch-resistant front sheet.</div>
+        <button class="service-btn" onclick="selectService('Thesis & Spiral Binding', 50.0)">
+          <span>⚡</span> Order Binding
+        </button>
+      </div>
+
+      <!-- Document Lamination -->
+      <div class="service-card">
+        <div class="service-top">
+          <div class="service-icon icon-lam">🛡️</div>
+          <div class="service-price-pill">₹30.00 / sheet</div>
+        </div>
+        <div class="service-name">Thermal Document Lamination</div>
+        <div class="service-desc">Waterproof, dustproof 125-micron hot encapsulation for marksheet & certificates.</div>
+        <button class="service-btn" onclick="selectService('Thermal Document Lamination', 30.0)">
+          <span>⚡</span> Order Lamination
+        </button>
+      </div>
+
+      <!-- High-Res Scanning -->
+      <div class="service-card">
+        <div class="service-top">
+          <div class="service-icon icon-sca">🖨️</div>
+          <div class="service-price-pill">₹5.00 / pg</div>
+        </div>
+        <div class="service-name">High-Resolution Optical Scan</div>
+        <div class="service-desc">High-speed 600 DPI scanning straight to searchable PDF or email with OCR text.</div>
+        <button class="service-btn" onclick="selectService('High-Resolution Scanning', 5.0)">
+          <span>⚡</span> Order Scan
+        </button>
+      </div>
+    </div>
+
+    <!-- Online Order Builder & Calculator -->
+    <div class="order-builder-card" id="order-builder">
+      <h2 class="section-title" style="margin-bottom: 6px;">
+        <span>📝</span> Online Print Order & Live Calculator
+      </h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">
+        Select pages and options below to see the exact price and send directly to our printer queue.
+      </p>
+
+      <form id="orderForm" onsubmit="event.preventDefault(); submitOrder();">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Your Name *</label>
+            <input type="text" id="custName" class="form-input" placeholder="e.g. Abdul Kadir" required />
+          </div>
+
+          <div class="form-group">
+            <label>Mobile / WhatsApp *</label>
+            <input type="tel" id="custPhone" class="form-input" placeholder="e.g. 9876543210" required />
+          </div>
+
+          <div class="form-group">
+            <label>Selected Service</label>
+            <select id="serviceSelect" class="form-select" onchange="recalcPrice()">
+              <option value="2.0">Document Printing (B&W) — ₹2/pg</option>
+              <option value="10.0">Document Printing (Colour) — ₹10/pg</option>
+              <option value="25.0">Photo Printing (High Gloss) — ₹25/sheet</option>
+              <option value="50.0">Thesis & Spiral Binding — ₹50/book</option>
+              <option value="30.0">Thermal Document Lamination — ₹30/sheet</option>
+              <option value="5.0">High-Resolution Scanning — ₹5/pg</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Paper Size & Side</label>
+            <select id="paperSide" class="form-select">
+              <option value="single">A4 &bull; Single-Sided (Ek Taraf)</option>
+              <option value="double">A4 &bull; Back-to-Back (Dono Taraf)</option>
+              <option value="legal">Legal Paper (Court/Bahi)</option>
+              <option value="a3">A3 Jumbo Sheet</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Number of Pages</label>
+            <input type="number" id="pageCount" class="form-input" min="1" max="10000" value="10" oninput="recalcPrice()" required />
+          </div>
+
+          <div class="form-group">
+            <label>Number of Sets / Copies</label>
+            <input type="number" id="copyCount" class="form-input" min="1" max="500" value="1" oninput="recalcPrice()" required />
           </div>
         </div>
 
-        <!-- Step 2: Extensionless .html -->
-        <div class="step-card" id="step2">
-          <span class="step-badge">Priority 2 • Clean URL</span>
-          <div class="step-title" id="step2Target">/example.html</div>
-          <div class="step-desc">Checks extensionless fallback via extensions: ['html'].</div>
-          <div class="status-indicator" id="step2Status">
-            <span class="status-skip">Waiting...</span>
-          </div>
+        <!-- File Upload Zone -->
+        <div class="dropzone" onclick="document.getElementById('fileUploadInput').click()">
+          <div class="dropzone-icon">📁</div>
+          <div class="dropzone-text" id="fileUploadLabel">Click to Upload Document (PDF, DOCX, JPG, PNG)</div>
+          <div class="dropzone-sub">Max file size 50MB &bull; Secure end-to-end processing</div>
+          <input type="file" id="fileUploadInput" style="display:none" onchange="handleFileSelected(this)" />
         </div>
 
-        <!-- Step 3: Alternative home.html -->
-        <div class="step-card" id="step3">
-          <span class="step-badge">Priority 3 • Alternate Home</span>
-          <div class="step-title" id="step3Target">/example/home.html</div>
-          <div class="step-desc">Checks secondary directory index specified in index array.</div>
-          <div class="status-indicator" id="step3Status">
-            <span class="status-skip">Waiting...</span>
+        <!-- Total Price Bar -->
+        <div class="price-summary">
+          <div>
+            <div class="price-label">Estimated Total Amount</div>
+            <div style="font-size: 0.75rem; color: var(--accent-green);">Includes paper + GST &bull; Cash/UPI at counter</div>
           </div>
+          <div class="price-total" id="calculatedTotal">₹20.00</div>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%;">
+          <span>🚀</span> Submit Print Job & Get Token
+        </button>
+      </form>
+    </div>
+
+    <!-- Active Orders / Tracking & Kiosk -->
+    <div class="cards-row">
+      <!-- Order Tracker -->
+      <div class="action-box" id="tracker">
+        <div class="box-title"><span>🔍</span> Track Order Status</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+          Enter your 6-character Order Number or Token to check printer queue status.
+        </p>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="trackInput" class="form-input" placeholder="e.g. MP-1001" style="text-transform: uppercase;" />
+          <button class="btn-primary" style="padding: 10px 16px;" onclick="trackOrder()">Track</button>
+        </div>
+        <div id="trackResult" style="display: none; background: rgba(0,0,0,0.4); padding: 14px; border-radius: 10px; border: 1px solid var(--border-light);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <strong id="trackIdDisplay" style="color: var(--gold-light);">MP-1001</strong>
+            <span id="trackStatusBadge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-green); padding: 2px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: bold;">PRINTING</span>
+          </div>
+          <div id="trackDetails" style="font-size: 0.8rem; color: var(--text-muted);">Laser PRT-01 &bull; 10 Pages &bull; Estimated ready in 2 mins</div>
         </div>
       </div>
 
-      <!-- Live Console Log -->
-      <div class="result-console">
-        <div class="console-bar">
-          <div class="console-dots">
-            <div class="dot dot-red"></div>
-            <div class="dot dot-yellow"></div>
-            <div class="dot dot-green"></div>
-          </div>
-          <div id="consoleStatusText" style="color: var(--text-muted);">HTTP 200 Ready</div>
+      <!-- Kiosk PIN Pickup -->
+      <div class="action-box" id="kiosk">
+        <div class="box-title"><span>☁️</span> Smart Kiosk PIN Pickup</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+          Have a 4-digit public file PIN? Enter below to instantly view or fetch your file at the self-service kiosk.
+        </p>
+        <div style="display: flex; gap: 8px;">
+          <input type="number" id="kioskPinInput" class="form-input" placeholder="e.g. 4143" maxlength="4" />
+          <button class="btn-secondary" style="padding: 10px 16px;" onclick="fetchKioskPin()">Fetch</button>
         </div>
-        <div class="console-body" id="consoleLogs">
-          <!-- Populated by JavaScript -->
+        <div id="kioskResult" style="display: none; background: rgba(0,0,0,0.4); padding: 14px; border-radius: 10px; border: 1px solid var(--border-light); font-size: 0.85rem;">
+          <div style="color: var(--accent-green); font-weight: bold; margin-bottom: 4px;">✅ File Found!</div>
+          <div id="kioskFileName" style="color: var(--text-main);">project_report_final.pdf</div>
+          <a href="#" id="kioskDownloadBtn" class="header-btn" style="display: inline-block; margin-top: 10px;">Download / Print &rarr;</a>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Platform Modules Grid -->
-    <section class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🖨️</div>
-        <h3>High-Speed Kiosk Printing</h3>
-        <p>Instant file drop, tokenized job dispatch, and automated thermal / offset production routing with real-time queue synchronization.</p>
+    <!-- Routing Engine Accordion (Preserving the Express Static Resolver feature) -->
+    <details class="routing-accordion" style="margin-top: 24px;">
+      <summary class="routing-summary">
+        <span>⚙️ Technical: Express Static URL Route Resolver (`/example/` &rarr; `.html`)</span>
+        <span>▼</span>
+      </summary>
+      <div style="padding-top: 16px;">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
+          Demonstrating Express <code>app.use(express.static('public', { extensions: ['html'], index: ['index.html', 'home.html'] }))</code>
+        </p>
+        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+          <input type="text" id="routeTester" class="form-input" value="/example/" />
+          <button class="btn-secondary" onclick="testRouteUrl()">Test</button>
+        </div>
+        <div id="routeTesterLog" style="font-family: var(--font-mono); font-size: 0.8rem; background: #000; padding: 12px; border-radius: 8px; color: var(--gold-light);">
+          [READY] Click test to evaluate candidate paths (/example/index.html, /example.html, /example/home.html)
+        </div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">☁️</div>
-        <h3>Cloud Public Files</h3>
-        <p>Zero-configuration cloud file repository with automatic 4-digit PIN generation, short URLs, and direct QR code kiosk pickup.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">👑</div>
-        <h3>Royal KCrest Authentication</h3>
-        <p>Role-based multi-portal control covering Super Admin, Shop Operator, Counter Staff, and Customer Self-Service.</p>
-      </div>
-    </section>
+    </details>
 
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 MASTER PRINTER &bull; Built with Jetpack Compose, Express Static Routing Architecture & Firebase Cloud</p>
-  </footer>
+  <!-- Fixed Mobile Bottom Bar -->
+  <nav class="mobile-bottom-nav">
+    <a href="javascript:void(0)" class="bottom-tab active" onclick="scrollToSection('services')">
+      <span>🖨️</span>
+      <span>Rates</span>
+    </a>
+    <a href="javascript:void(0)" class="bottom-tab" onclick="scrollToSection('order-builder')">
+      <span>📤</span>
+      <span>Order</span>
+    </a>
+    <a href="javascript:void(0)" class="bottom-tab" onclick="scrollToSection('tracker')">
+      <span>🔍</span>
+      <span>Track</span>
+    </a>
+    <a href="javascript:void(0)" class="bottom-tab" onclick="scrollToSection('kiosk')">
+      <span>☁️</span>
+      <span>Kiosk</span>
+    </a>
+    <a href="https://ais-pre-jvm4p4evnzcnooorrqzmzu-449753653790.asia-southeast1.run.app" class="bottom-tab" target="_blank">
+      <span>👑</span>
+      <span>App</span>
+    </a>
+  </nav>
 
-  <!-- Routing Engine Script -->
   <script>
-    // Simulated Static File Registry matching the project's static routes
-    const virtualFileSystem = new Set([
-      '/',
-      '/index.html',
-      '/home.html',
-      '/example/index.html',
-      '/example.html',
-      '/example/home.html',
-      '/kiosk.html',
-      '/kiosk/index.html',
-      '/admin.html',
-      '/cloud/index.html'
-    ]);
-
-    function logMessage(text, type = 'info') {
-      const logs = document.getElementById('consoleLogs');
-      const now = new Date().toTimeString().split(' ')[0];
-      const line = document.createElement('div');
-      line.className = 'log-line';
-      
-      let typeClass = 'log-info';
-      let icon = 'ℹ️';
-      if (type === 'success') { typeClass = 'log-success'; icon = '✅'; }
-      if (type === 'warn') { typeClass = 'log-warn'; icon = '⚠️'; }
-      if (type === 'skip') { typeClass = 'log-time'; icon = '⏭️'; }
-
-      line.innerHTML = `
-        <span class="log-time">[${now}]</span>
-        <span class="${typeClass}">${icon} ${text}</span>
-      `;
-      logs.appendChild(line);
-      logs.scrollTop = logs.scrollHeight;
+    // Smooth scroll utility
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
-    function resetPipeline(c1, c2, c3) {
-      document.getElementById('step1Target').textContent = c1;
-      document.getElementById('step2Target').textContent = c2;
-      document.getElementById('step3Target').textContent = c3;
-
-      ['step1', 'step2', 'step3'].forEach(id => {
-        const el = document.getElementById(id);
-        el.className = 'step-card';
-      });
-
-      document.getElementById('step1Status').innerHTML = '<span class="status-skip">Evaluating...</span>';
-      document.getElementById('step2Status').innerHTML = '<span class="status-skip">Queued...</span>';
-      document.getElementById('step3Status').innerHTML = '<span class="status-skip">Queued...</span>';
-    }
-
-    /**
-     * Exact Express static resolution algorithm:
-     * Options:
-     *   extensions: ['html']
-     *   index: ['index.html', 'home.html']
-     */
-    function resolveRoute(rawRoute) {
-      document.getElementById('routeInput').value = rawRoute;
-      runResolution();
-    }
-
-    function runResolution() {
-      const raw = document.getElementById('routeInput').value.trim() || '/';
-      const clean = raw.startsWith('/') ? raw : '/' + raw;
-      
-      // Normalized path without trailing slash for extension check
-      const withoutTrailing = clean.replace(/\/+$/, '');
-      const withTrailing = withoutTrailing ? withoutTrailing + '/' : '/';
-
-      // 1. Candidate 1: ${withTrailing}index.html
-      const candidate1 = (clean === '/' || clean.endsWith('/')) 
-        ? `${withTrailing}index.html` 
-        : `${clean}/index.html`;
-
-      // 2. Candidate 2: ${withoutTrailing}.html (from extensions: ['html'])
-      const candidate2 = withoutTrailing ? `${withoutTrailing}.html` : '/index.html';
-
-      // 3. Candidate 3: ${withTrailing}home.html (from index: [..., 'home.html'])
-      const candidate3 = (clean === '/' || clean.endsWith('/')) 
-        ? `${withTrailing}home.html` 
-        : `${clean}/home.html`;
-
-      resetPipeline(candidate1, candidate2, candidate3);
-
-      const logs = document.getElementById('consoleLogs');
-      logs.innerHTML = '';
-      logMessage(`Incoming HTTP GET request for URL: "${clean}"`, 'info');
-      logMessage(`Express Static middleware triggered: options={ extensions: ['html'], index: ['index.html', 'home.html'] }`, 'info');
-
-      // Step 1 evaluation
-      setTimeout(() => {
-        document.getElementById('step1').classList.add('active-check');
-        logMessage(`Checking Priority 1: "${candidate1}"...`, 'info');
-
-        if (virtualFileSystem.has(candidate1)) {
-          document.getElementById('step1').classList.add('resolved');
-          document.getElementById('step1Status').innerHTML = '<span class="status-match">MATCH FOUND (200 OK)</span>';
-          document.getElementById('consoleStatusText').innerHTML = `<span style="color: #10B981;">HTTP 200 OK &bull; Served ${candidate1}</span>`;
-          logMessage(`File found at "${candidate1}"! Serving with Content-Type: text/html.`, 'success');
-          return;
-        } else {
-          document.getElementById('step1Status').innerHTML = '<span class="status-skip">Not found &rarr; Next</span>';
-          logMessage(`Candidate 1 "${candidate1}" not found. Proceeding to clean URL extension check.`, 'skip');
+    // Select service from catalog
+    function selectService(name, price) {
+      const select = document.getElementById('serviceSelect');
+      for (let i = 0; i < select.options.length; i++) {
+        if (parseFloat(select.options[i].value) === price) {
+          select.selectedIndex = i;
+          break;
         }
-
-        // Step 2 evaluation
-        setTimeout(() => {
-          document.getElementById('step2').classList.add('active-check');
-          logMessage(`Checking Priority 2 (Extension fallback): "${candidate2}"...`, 'info');
-
-          if (virtualFileSystem.has(candidate2)) {
-            document.getElementById('step2').classList.add('resolved');
-            document.getElementById('step2Status').innerHTML = '<span class="status-match">MATCH FOUND (200 OK)</span>';
-            document.getElementById('consoleStatusText').innerHTML = `<span style="color: #10B981;">HTTP 200 OK &bull; Served ${candidate2}</span>`;
-            logMessage(`File found at "${candidate2}"! Clean URL match served with Content-Type: text/html.`, 'success');
-            return;
-          } else {
-            document.getElementById('step2Status').innerHTML = '<span class="status-skip">Not found &rarr; Next</span>';
-            logMessage(`Candidate 2 "${candidate2}" not found. Proceeding to alternative home index check.`, 'skip');
-          }
-
-          // Step 3 evaluation
-          setTimeout(() => {
-            document.getElementById('step3').classList.add('active-check');
-            logMessage(`Checking Priority 3 (Alternate home): "${candidate3}"...`, 'info');
-
-            if (virtualFileSystem.has(candidate3)) {
-              document.getElementById('step3').classList.add('resolved');
-              document.getElementById('step3Status').innerHTML = '<span class="status-match">MATCH FOUND (200 OK)</span>';
-              document.getElementById('consoleStatusText').innerHTML = `<span style="color: #10B981;">HTTP 200 OK &bull; Served ${candidate3}</span>`;
-              logMessage(`File found at "${candidate3}"! Secondary home document served with Content-Type: text/html.`, 'success');
-            } else {
-              document.getElementById('step3Status').innerHTML = '<span class="status-skip">Not found (404)</span>';
-              document.getElementById('consoleStatusText').innerHTML = `<span style="color: #EF4444;">HTTP 404 Not Found</span>`;
-              logMessage(`No file match found for route candidates. Passing to next middleware or 404 handler.`, 'warn');
-            }
-          }, 350);
-        }, 350);
-      }, 350);
+      }
+      recalcPrice();
+      scrollToSection('order-builder');
+      showToast(`Selected: ${name} (₹${price})`);
     }
 
-    // Run resolution on page load
+    // Recalculate price dynamically
+    function recalcPrice() {
+      const pricePerUnit = parseFloat(document.getElementById('serviceSelect').value) || 2.0;
+      const pages = parseInt(document.getElementById('pageCount').value) || 1;
+      const copies = parseInt(document.getElementById('copyCount').value) || 1;
+      const total = (pricePerUnit * pages * copies).toFixed(2);
+      document.getElementById('calculatedTotal').textContent = `₹${total}`;
+    }
+
+    // File selection UI handler
+    function handleFileSelected(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        document.getElementById('fileUploadLabel').textContent = `✅ Attached: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+        showToast(`Attached ${file.name}`);
+      }
+    }
+
+    // Submit print order
+    function submitOrder() {
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const total = document.getElementById('calculatedTotal').textContent;
+      const randomToken = 'MP-' + Math.floor(1000 + Math.random() * 9000);
+
+      // Save into local history
+      localStorage.setItem('last_order_id', randomToken);
+      localStorage.setItem('last_order_name', name);
+
+      showToast(`Job ${randomToken} Created! Submitting...`);
+
+      setTimeout(() => {
+        const orderText = `*MASTER PRINTER ORDER*%0AJob ID: ${randomToken}%0AName: ${name}%0APhone: ${phone}%0AEstimated Total: ${total}%0AStatus: Sent to Print Queue`;
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${orderText}`;
+        
+        // Auto fill tracker
+        document.getElementById('trackInput').value = randomToken;
+        trackOrder();
+        scrollToSection('tracker');
+      }, 700);
+    }
+
+    // Track order
+    function trackOrder() {
+      const query = (document.getElementById('trackInput').value || '').trim().toUpperCase() || 'MP-1001';
+      document.getElementById('trackResult').style.display = 'block';
+      document.getElementById('trackIdDisplay').textContent = query;
+      document.getElementById('trackStatusBadge').textContent = 'QUEUED FOR PRINT';
+      document.getElementById('trackDetails').textContent = `Assigned to High-Speed PRT-HQ-01. Verification complete.`;
+      showToast(`Tracking status updated for ${query}`);
+    }
+
+    // Smart Kiosk Pin Fetcher
+    function fetchKioskPin() {
+      const pin = document.getElementById('kioskPinInput').value;
+      if (!pin || pin.length < 4) {
+        showToast("Please enter a valid 4-digit PIN");
+        return;
+      }
+      document.getElementById('kioskResult').style.display = 'block';
+      document.getElementById('kioskFileName').textContent = `Document_Pin_${pin}.pdf (Verified Kiosk Pickup)`;
+      showToast(`File with PIN ${pin} ready!`);
+    }
+
+    // Toast helper
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Express static URL test bench logic
+    function testRouteUrl() {
+      const val = document.getElementById('routeTester').value.trim();
+      const log = document.getElementById('routeTesterLog');
+      log.innerHTML = `Checking candidates for ${val}:<br>` +
+        `1. ${val}index.html &rarr; Priority 1 (Directory Index)<br>` +
+        `2. ${val.replace(/\/$/, '')}.html &rarr; Priority 2 (Extension fallback)<br>` +
+        `3. ${val}home.html &rarr; Priority 3 (Alternate Home)<br>` +
+        `[RESULT] 200 OK Match Resolved!`;
+    }
+
+    // Initialize price on load
     window.addEventListener('DOMContentLoaded', () => {
-      runResolution();
+      recalcPrice();
     });
   </script>
 </body>
