@@ -1,0 +1,5 @@
+# Netlify redirects and static routing rules
+/example/ /example/index.html 200
+/example.html /example.html 200
+/home.html /home.html 200
+/* /index.html 200
